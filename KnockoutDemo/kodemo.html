@@ -22,6 +22,15 @@
     <script src="Scripts/jquery-1.7.1.js"></script>
     <script src="Scripts/knockout-2.1.0.js"></script>
     
+    <script id="friendsTemplate" type="text/html">
+        <li>
+            <input data-bind="value: name" />
+            <button>Remove</button>
+            <label><input type="checkbox" data-bind="checked: isOnTwitter" /> Is on twitter</label>
+            <input data-bind="value: twitterHandle" />
+        </li>
+    </script>
+
     <script>
         $(function () {
             var ViewModel = 
