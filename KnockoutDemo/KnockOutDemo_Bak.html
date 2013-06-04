@@ -33,71 +33,73 @@
     </script>
     
     <script>
-        function friend(name) {
-            return {
-                name: ko.observable(name),
-                isOnTwitter: ko.observable(false),
-                twitterHandle: ko.observable(),
+        $(function () {
+            function friend(name) {
+                return {
+                    name: ko.observable(name),
+                    isOnTwitter: ko.observable(false),
+                    twitterHandle: ko.observable(),
 
-                remove: function () {
-                    ViewModel.friends.remove(this);
+                    remove: function () {
+                        ViewModel.friends.remove(this);
+                    }
+                };
+            }
+
+            var ViewModel = {
+                firstName: ko.observable("Bert"),
+                lastName: ko.observable("Smith"),
+                email: ko.observable("bertie@smith.com"),
+                friends: ko.observableArray([new friend("steve"), new friend("annie")]),
+
+                addFriend: function () {
+                    this.friends.push(new friend($('#newFriend').val()));
+                },
+
+                save: function () {
+                    $.ajax({
+                        url: "http://localhost:56116/UserDetails/Save",
+                        type: "post",
+                        data: ko.toJSON(this),
+                        contentType: "application/JSON",
+                        success: function (result) { alert(result.message); }
+                    });
+                },
+
+                load: function () {
+                    $.get("http://localhost:56116/UserDetails/GetJSON/", function (data) {
+                        var parsed = JSON.parse(data);
+                        ViewModel.firstName(parsed.firstName);
+                        ViewModel.lastName(parsed.lastName);
+                        ViewModel.email(parsed.email);
+                        ViewModel.friends.removeAll();
+                        for (index = 0; index < parsed.friends.length; index++) {
+                            ViewModel.friends.push(new friend(parsed.friends[index].name));
+                        }
+                    });
                 }
             };
-        }
 
-        var ViewModel = {
-            firstName: ko.observable("Bert"),
-            lastName: ko.observable("Smith"),
-            email: ko.observable("bertie@smith.com"),
-            friends: ko.observableArray([new friend("steve"), new friend("annie")]),
+            ViewModel.fullName = ko.dependentObservable(function () {
+                return this.firstName() + " " + this.lastName();
+            }, ViewModel);
 
-            addFriend: function () {
-                this.friends.push(new friend($('#newFriend').val()));
-            },
-
-            save: function () {
-                $.ajax({
-                    url: "http://localhost:56116/UserDetails/Save",
-                    type: "post",
-                    data: ko.toJSON(this),
-                    contentType: "application/JSON",
-                    success: function (result) { alert(result.message); }
-                });
-            },
-
-            load: function () {
-                $.get("http://localhost:56116/UserDetails/GetJSON/", function (data) {
+            function loadModel() {
+                $.get("http://localhost:50609/Person/GetJSON/", function (data) {
                     var parsed = JSON.parse(data);
-                    ViewModel.firstName(parsed.firstName);
-                    ViewModel.lastName(parsed.lastName);
-                    ViewModel.email(parsed.email);
+                    ViewModel.firstName = parsed.firstName;
+                    ViewModel.lastName = parsed.lastName;
+                    ViewModel.email = parsed.email;
                     ViewModel.friends.removeAll();
                     for (index = 0; index < parsed.friends.length; index++) {
                         ViewModel.friends.push(new friend(parsed.friends[index].name));
                     }
-                });
-            }
-        };
-
-        ViewModel.fullName = ko.dependentObservable(function () {
-            return this.firstName() + " " + this.lastName();
-        }, ViewModel);
-
-        function loadModel() {
-            $.get("http://localhost:50609/Person/GetJSON/", function (data) {
-                var parsed = JSON.parse(data);
-                ViewModel.firstName = parsed.firstName;
-                ViewModel.lastName = parsed.lastName;
-                ViewModel.email = parsed.email;
-                ViewModel.friends.removeAll();
-                for (index = 0; index < parsed.friends.length; index++) {
-                    ViewModel.friends.push(new friend(parsed.friends[index].name));
                 }
-            }
-            );
-        };
+                );
+            };
 
-        ko.applyBindings(ViewModel);
+            ko.applyBindings(ViewModel);
+        });
     </script>
 </body>
 </html>
