@@ -25,7 +25,7 @@
     <script id="friendsTemplate" type="text/html">
         <li>
             <input data-bind="value: name" />
-            <button>Remove</button>
+            <button data-bind="click: remove">Remove</button>
             <label><input type="checkbox" data-bind="checked: isOnTwitter" /> Is on twitter</label>
             <input data-bind="value: twitterHandle, visible: isOnTwitter" />
         </li>
@@ -38,6 +38,10 @@
                     name: ko.observable(name),
                     isOnTwitter: ko.observable(false),
                     twitterHandle: ko.observable(),
+
+                    remove: function () {
+                        ViewModel.friends.remove(this);
+                    }
                 };
             }
 
