@@ -5,9 +5,9 @@
 </head>
 <body>
     
-    <h1>User Details - <span></span></h1>
-    <p>Name: <input /><input/></p>
-    <p>Email: <input  /></p>
+    <h1>User Details - <span data-bind="text: firstName"></span></h1>
+    <p>Name: <input data-bind="value: firstName" /><input data-bind="value: lastName"/></p>
+    <p>Email: <input  data-bind="value: email" /></p>
 
     <div id="friends">
         <h1>Friends (<span>X</span>):</h1>
