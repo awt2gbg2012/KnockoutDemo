@@ -45,9 +45,9 @@
                 {
                     firstName: ko.observable("Bert"),
                     lastName: ko.observable("Smith"),
-                    email: ko.observable("bert@smith.com")
+                    email: ko.observable("bert@smith.com"),
 
-
+                    friends: ko.observableArray([new friend("annie"), new friend("steve")])
                 }
 
             ViewModel.fullName = ko.dependentObservable(function () {
