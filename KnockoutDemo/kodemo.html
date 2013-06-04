@@ -12,7 +12,7 @@
     <div id="friends">
         <h1>Friends (<span>X</span>):</h1>
         <ul data-bind="template: {name: 'friendsTemplate', foreach: friends}"></ul>
-        <input id="newFriend" value="" /><button>Add Friend</button>
+        <input id="newFriend" value="" /><button data-bind="click: addFriend, enable: friends().length < 5">Add Friend</button>
     </div>
     <br />
     <button>Save Details</button>
@@ -46,8 +46,11 @@
                     firstName: ko.observable("Bert"),
                     lastName: ko.observable("Smith"),
                     email: ko.observable("bert@smith.com"),
+                    friends: ko.observableArray([new friend("steve"), new friend("annie")]),
 
-                    friends: ko.observableArray([new friend("steve"), new friend("annie")])
+                    addFriend: function () {
+                        this.friends.push(new friend($('#newFriend').val()));
+                    }
                 }
 
             ViewModel.fullName = ko.dependentObservable(function () {
