@@ -5,7 +5,7 @@
 </head>
 <body>
     
-    <h1>User Details - <span data-bind="text: firstName"></span></h1>
+    <h1>User Details - <span data-bind="text: fullName"></span></h1>
     <p>Name: <input data-bind="value: firstName" /><input data-bind="value: lastName"/></p>
     <p>Email: <input  data-bind="value: email" /></p>
 
@@ -30,6 +30,10 @@
                     lastName: ko.observable("Smith"),
                     email: ko.observable("bert@smith.com")
                 }
+
+            ViewModel.fullName = ko.dependentObservable(function () {
+                return this.firstName() + ' ' + this.lastName();
+            }, ViewModel);
 
             ko.applyBindings(ViewModel);
         });
