@@ -33,11 +33,21 @@
 
     <script>
         $(function () {
+            function friend() {
+                return {
+                    name: ko.observable(name),
+                    isOnTwitter: ko.observable(false),
+                    twitterHandle: ko.observable()
+                }
+            }
+
             var ViewModel = 
                 {
                     firstName: ko.observable("Bert"),
                     lastName: ko.observable("Smith"),
                     email: ko.observable("bert@smith.com")
+
+
                 }
 
             ViewModel.fullName = ko.dependentObservable(function () {
