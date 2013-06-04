@@ -10,7 +10,7 @@
     <p>Email: <input  data-bind="value: email" /></p>
 
     <div id="friends">
-        <h1>Friends (<span>X</span>):</h1>
+        <h1>Friends (<span data-bind="text: friends().length"></span>):</h1>
         <ul data-bind="template: {name: 'friendsTemplate', foreach: friends}"></ul>
         <input id="newFriend" value="" /><button data-bind="click: addFriend, enable: friends().length < 5">Add Friend</button>
     </div>
