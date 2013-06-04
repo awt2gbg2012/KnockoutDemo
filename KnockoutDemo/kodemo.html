@@ -11,7 +11,7 @@
 
     <div id="friends">
         <h1>Friends (<span>X</span>):</h1>
-        <ul></ul>
+        <ul data-bind="template: {name: 'friendsTemplate', foreach: friends}"></ul>
         <input id="newFriend" value="" /><button>Add Friend</button>
     </div>
     <br />
@@ -27,18 +27,18 @@
             <input data-bind="value: name" />
             <button>Remove</button>
             <label><input type="checkbox" data-bind="checked: isOnTwitter" /> Is on twitter</label>
-            <input data-bind="value: twitterHandle" />
+            <input data-bind="value: twitterHandle, visible: isOnTwitter" />
         </li>
     </script>
 
     <script>
         $(function () {
-            function friend() {
+            function friend(name) {
                 return {
                     name: ko.observable(name),
                     isOnTwitter: ko.observable(false),
-                    twitterHandle: ko.observable()
-                }
+                    twitterHandle: ko.observable(),
+                };
             }
 
             var ViewModel = 
@@ -47,7 +47,7 @@
                     lastName: ko.observable("Smith"),
                     email: ko.observable("bert@smith.com"),
 
-                    friends: ko.observableArray([new friend("annie"), new friend("steve")])
+                    friends: ko.observableArray([new friend("steve"), new friend("annie")])
                 }
 
             ViewModel.fullName = ko.dependentObservable(function () {
